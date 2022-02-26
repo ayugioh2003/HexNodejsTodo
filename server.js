@@ -1,23 +1,16 @@
 import http from 'http'
 import { v4 as uuidv4 } from 'uuid'
+import headers from './config/headers.js'
 import errorHandle from './errorHandle.js'
 
 const todos = [
   {
-    id: uuidv4(),
+    id: '0fc88620-1a44-4654-b38c-7f0f59aca2af',
     title: '早上起來刷刷牙',
   },
 ]
 
 const requestListener = (req, res) => {
-  const headers = {
-    'Access-Control-Allow-Headers':
-      'Content-Type, Authorization, Content-Length, X-Requested-With',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'PATCH, POST, GET,OPTIONS,DELETE',
-    'Content-Type': 'application/json',
-  }
-
   let body = ''
   req.on('data', (chunk) => {
     body += chunk
