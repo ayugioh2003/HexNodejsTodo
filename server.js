@@ -22,31 +22,28 @@ const requestListener = (req, res) => {
   req.on('data', (chunk) => {
     body += chunk
   })
-  // req.on('end', () => {
-  //   console.log('body', JSON.parse(body))
-  // })
 
-  if (req.method == 'OPTIONS') {
-    res.writeHead(200, headers)
-    res.write(JSON.stringify({ status: 'success' }))
-    return res.end()
-  }
-  if (req.url === '/' && req.method === 'GET') {
-    res.writeHead(200, headers)
-    res.write(JSON.stringify({ status: 'success', data: [] }))
-    return res.end()
-  }
+  req.on('end', () => {
+    if (req.method == 'OPTIONS') {
+      res.writeHead(200, headers)
+      res.write(JSON.stringify({ status: 'success' }))
+      return res.end()
+    }
+    if (req.url === '/' && req.method === 'GET') {
+      res.writeHead(200, headers)
+      res.write(JSON.stringify({ status: 'success', data: [] }))
+      return res.end()
+    }
 
-  // ------------ todos ------------
-  // todos get
-  if (req.url === '/todos' && req.method === 'GET') {
-    res.writeHead(200, headers)
-    res.write(JSON.stringify({ status: 'success', data: todos }))
-    return res.end()
-  }
-  // todo post
-  else if (req.url === '/todos' && req.method === 'POST') {
-    req.on('end', () => {
+    // ------------ todos ------------
+    // todos get
+    if (req.url === '/todos' && req.method === 'GET') {
+      res.writeHead(200, headers)
+      res.write(JSON.stringify({ status: 'success', data: todos }))
+      return res.end()
+    }
+    // todo post
+    else if (req.url === '/todos' && req.method === 'POST') {
       try {
         const title = JSON.parse(body).title
 
@@ -66,11 +63,9 @@ const requestListener = (req, res) => {
       } catch (error) {
         errorHandle(res, error)
       }
-    })
-  }
-  // todo delete
-  else if (req.url === '/todos' && req.method === 'DELETE') {
-    req.on('end', () => {
+    }
+    // todo delete
+    else if (req.url === '/todos' && req.method === 'DELETE') {
       try {
         todos.length = 0
         res.writeHead(200, headers)
@@ -78,14 +73,12 @@ const requestListener = (req, res) => {
         res.end()
       } catch (error) {
         console.log(error)
-        errorHandle(res, error)
+        return errorHandle(res, error)
       }
-    })
-  }
-  // ------------ todo ------------
-  // todo delete
-  else if (req.url.includes('/todos/') && req.method === 'DELETE') {
-    req.on('end', () => {
+    }
+    // ------------ todo ------------
+    // todo delete
+    else if (req.url.includes('/todos/') && req.method === 'DELETE') {
       try {
         const id = req.url.split('/').at(-1)
         const index = todos.findIndex((todo) => todo.id === id)
@@ -103,11 +96,9 @@ const requestListener = (req, res) => {
         console.log(error)
         errorHandle(res, error)
       }
-    })
-  }
-  // todo patch
-  else if (req.url.includes('/todos/') && req.method === 'PATCH') {
-    req.on('end', () => {
+    }
+    // todo patch
+    else if (req.url.includes('/todos/') && req.method === 'PATCH') {
       try {
         const title = JSON.parse(body).title
 
@@ -133,14 +124,14 @@ const requestListener = (req, res) => {
         console.log(error)
         errorHandle(res, error)
       }
-    })
-  }
-  // ------------ else ------------
-  else {
-    res.writeHead(404, headers)
-    res.write(JSON.stringify({ status: 'false', message: '無此網站路由' }))
-    res.end()
-  }
+    }
+    // ------------ else ------------
+    else {
+      res.writeHead(404, headers)
+      res.write(JSON.stringify({ status: 'false', message: '無此網站路由' }))
+      res.end()
+    }
+  })
 }
 
 const server = http.createServer(requestListener)
