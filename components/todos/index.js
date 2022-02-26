@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 // config
 import responseHandler from '../../utils/responseHandler.js'
-import errorHandle from '../../errorHandle.js'
+import errorHandler from '../../utils/errorHandler.js'
 
 export default (req, res) => {
   // todos get
@@ -16,7 +16,7 @@ export default (req, res) => {
 
       if (!title) {
         console.log('title is required')
-        return errorHandle(res)
+        return errorHandler({ res })
       }
 
       const todo = {
@@ -27,7 +27,7 @@ export default (req, res) => {
 
       return responseHandler({ res, data: todo })
     } catch (error) {
-      return errorHandle(res, error)
+      return errorHandler({ res })
     }
   }
   // todo delete
@@ -37,7 +37,7 @@ export default (req, res) => {
       return responseHandler({ res, data: req.todos })
     } catch (error) {
       console.log(error)
-      return errorHandle(res, error)
+      return errorHandle({ res })
     }
   }
 }

@@ -1,6 +1,6 @@
 // utils
 import responseHandler from '../../utils/responseHandler.js'
-import errorHandle from '../../errorHandle.js'
+import errorHandler from '../../utils/errorHandler.js'
 
 export default (req, res) => {
   // todo delete
@@ -11,13 +11,13 @@ export default (req, res) => {
 
       if (index === -1) {
         console.log('todo not found')
-        return errorHandle(res)
+        return errorHandler({ res })
       }
 
       req.todos.splice(index, 1)
       return responseHandler({ res, data: req.todos })
     } catch (error) {
-      errorHandle(res, error)
+      errorHandler({ res })
     }
   }
   // todo patch
@@ -27,7 +27,7 @@ export default (req, res) => {
 
       if (!title) {
         console.log('title is required')
-        return errorHandle(res)
+        return errorHandler({ res })
       }
 
       const id = req.url.split('/').at(-1)
@@ -35,7 +35,7 @@ export default (req, res) => {
 
       if (index === -1) {
         console.log('todo not found')
-        return errorHandle(res)
+        return errorHandler({ res })
       }
 
       const todo = req.todos[index]
@@ -43,7 +43,7 @@ export default (req, res) => {
 
       return responseHandler({ res, data: todo })
     } catch (error) {
-      errorHandle(res, error)
+      errorHandler({ res })
     }
   }
 }
