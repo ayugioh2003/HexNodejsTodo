@@ -6,11 +6,11 @@ import errorHandler from '../../utils/errorHandler.js'
 
 export default (req, res) => {
   // todos get
-  if (req.url === '/todos' && req.method === 'GET') {
+  if (req.method === 'GET') {
     return responseHandler({ res, data: req.todos })
   }
   // todo post
-  if (req.url === '/todos' && req.method === 'POST') {
+  if (req.method === 'POST') {
     try {
       const title = JSON.parse(req.body).title
 
@@ -31,7 +31,7 @@ export default (req, res) => {
     }
   }
   // todo delete
-  else if (req.url === '/todos' && req.method === 'DELETE') {
+  if (req.method === 'DELETE') {
     try {
       req.todos.length = 0
       return responseHandler({ res, data: req.todos })
