@@ -6,6 +6,7 @@ import errorHandle from './errorHandle.js'
 
 // routers
 import todosRoute from './components/todos/index.js'
+import todoRoute from './components/todo/index.js'
 
 // models
 const todos = [
@@ -40,55 +41,11 @@ const requestListener = (req, res) => {
         return
       }
 
-      // ------------ todo ------------
-      // todo delete
-      if (req.url.includes('/todos/') && req.method === 'DELETE') {
-        try {
-          const id = req.url.split('/').at(-1)
-          const index = todos.findIndex((todo) => todo.id === id)
-
-          if (index === -1) {
-            console.log('todo not found')
-            return errorHandle(res)
-          }
-
-          todos.splice(index, 1)
-          res.writeHead(200, headers)
-          res.write(JSON.stringify({ status: 'success', data: todos }))
-          res.end()
-        } catch (error) {
-          console.log(error)
-          errorHandle(res, error)
-        }
+      if (req.url.includes('/todos/')) {
+        todoRoute(req, res)
+        return
       }
-      // todo patch
-      if (req.url.includes('/todos/') && req.method === 'PATCH') {
-        try {
-          const title = JSON.parse(req.body).title
 
-          if (!title) {
-            console.log('title is required')
-            return errorHandle(res)
-          }
-
-          const id = req.url.split('/').at(-1)
-          const index = todos.findIndex((todo) => todo.id === id)
-
-          if (index === -1) {
-            console.log('todo not found')
-            return errorHandle(res)
-          }
-
-          const todo = todos[index]
-          todo.title = title
-          res.writeHead(200, headers)
-          res.write(JSON.stringify({ status: 'success', data: todo }))
-          res.end()
-        } catch (error) {
-          console.log(error)
-          errorHandle(res, error)
-        }
-      }
       // ------------ else ------------
       else {
         res.writeHead(404, headers)
