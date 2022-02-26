@@ -1,7 +1,5 @@
-import { v4 as uuidv4 } from 'uuid'
-
-// config
-import headers from '../../config/headers.js'
+// utils
+import responseHandler from '../../utils/responseHandler.js'
 import errorHandle from '../../errorHandle.js'
 
 export default (req, res) => {
@@ -17,11 +15,8 @@ export default (req, res) => {
       }
 
       req.todos.splice(index, 1)
-      res.writeHead(200, headers)
-      res.write(JSON.stringify({ status: 'success', data: req.todos }))
-      res.end()
+      return responseHandler({ res, data: req.todos })
     } catch (error) {
-      console.log(error)
       errorHandle(res, error)
     }
   }
@@ -45,11 +40,9 @@ export default (req, res) => {
 
       const todo = req.todos[index]
       todo.title = title
-      res.writeHead(200, headers)
-      res.write(JSON.stringify({ status: 'success', data: todo }))
-      res.end()
+
+      return responseHandler({ res, data: todo })
     } catch (error) {
-      console.log(error)
       errorHandle(res, error)
     }
   }

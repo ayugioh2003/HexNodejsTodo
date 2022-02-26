@@ -1,8 +1,7 @@
 import http from 'http'
 
 // config
-import headers from './config/headers.js'
-import errorHandle from './errorHandle.js'
+import responseHandler from './utils/responseHandler.js'
 
 // routers
 import todosRoute from './components/todos/index.js'
@@ -24,37 +23,30 @@ const requestListener = (req, res) => {
   })
 
   req.on('end', () => {
-    try {
-      if (req.method == 'OPTIONS') {
-        res.writeHead(200, headers)
-        res.write(JSON.stringify({ status: 'success' }))
-        return res.end()
-      }
-      if (req.url === '/' && req.method === 'GET') {
-        res.writeHead(200, headers)
-        res.write(JSON.stringify({ status: 'success', data: [] }))
-        return res.end()
-      }
-
-      if (req.url === '/todos') {
-        todosRoute(req, res)
-        return
-      }
-
-      if (req.url.includes('/todos/')) {
-        todoRoute(req, res)
-        return
-      }
-
-      // ------------ else ------------
-      else {
-        res.writeHead(404, headers)
-        res.write(JSON.stringify({ status: 'false', message: '無此網站路由' }))
-        res.end()
-      }
-    } catch (error) {
-      console.log('end error', error)
+    if (req.method == 'OPTIONS') {
+      return responseHandler({ res, data: req.todos })
     }
+    if (req.url === '/' && req.method === 'GET') {
+      return responseHandler({ res, data: req.todos })
+    }
+
+    if (req.url === '/todos') {
+      todosRoute(req, res)
+      return
+    }
+
+    if (req.url.includes('/todos/')) {
+      todoRoute(req, res)
+      return
+    }
+
+    // ------------ else ------------
+    return responseHandler({
+      res,
+      code: 404,
+      status: 'false',
+      message: '無此網站路由',
+    })
   })
 }
 

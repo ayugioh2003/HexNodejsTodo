@@ -1,18 +1,16 @@
 import { v4 as uuidv4 } from 'uuid'
 
 // config
-import headers from '../../config/headers.js'
+import responseHandler from '../../utils/responseHandler.js'
 import errorHandle from '../../errorHandle.js'
 
 export default (req, res) => {
   // todos get
   if (req.url === '/todos' && req.method === 'GET') {
-    res.writeHead(200, headers)
-    res.write(JSON.stringify({ status: 'success', data: req.todos }))
-    return res.end()
+    return responseHandler({ res, data: req.todos })
   }
   // todo post
-  else if (req.url === '/todos' && req.method === 'POST') {
+  if (req.url === '/todos' && req.method === 'POST') {
     try {
       const title = JSON.parse(req.body).title
 
@@ -26,9 +24,8 @@ export default (req, res) => {
         title,
       }
       req.todos.push(todo)
-      res.writeHead(200, headers)
-      res.write(JSON.stringify({ status: 'success', data: todo }))
-      return res.end()
+
+      return responseHandler({ res, data: todo })
     } catch (error) {
       return errorHandle(res, error)
     }
@@ -37,9 +34,7 @@ export default (req, res) => {
   else if (req.url === '/todos' && req.method === 'DELETE') {
     try {
       req.todos.length = 0
-      res.writeHead(200, headers)
-      res.write(JSON.stringify({ status: 'success', data: req.todos }))
-      res.end()
+      return responseHandler({ res, data: req.todos })
     } catch (error) {
       console.log(error)
       return errorHandle(res, error)
