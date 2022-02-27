@@ -1,4 +1,4 @@
-export default class TodosModel {
+class TodosModel {
   constructor() {
     this.todos = [
       {
@@ -43,3 +43,6 @@ export default class TodosModel {
     return todo
   }
 }
+
+const todosModel = new TodosModel()
+export default todosModel

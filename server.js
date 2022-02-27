@@ -9,11 +9,9 @@ import todosRoute from './components/todos/index.js'
 import todoRoute from './components/todo/index.js'
 
 // models
-import TodosModel from './components/todos/model.js'
-const todosModel = new TodosModel()
+import todosModel from './components/todos/model.js'
 
 const requestListener = (req, res) => {
-  req.todosModel = todosModel
   req.body = ''
   req.on('data', (chunk) => {
     req.body += chunk
@@ -21,10 +19,10 @@ const requestListener = (req, res) => {
 
   req.on('end', () => {
     if (req.method == 'OPTIONS') {
-      return responseHandler({ res, data: req.todos })
+      return responseHandler({ res, data: todosModel.getAll() })
     }
     if (req.url === '/' && req.method === 'GET') {
-      return responseHandler({ res, data: req.todos })
+      return responseHandler({ res, data: todosModel.getAll() })
     }
 
     if (req.url === '/todos') {

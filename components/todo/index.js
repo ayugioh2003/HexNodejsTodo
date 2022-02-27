@@ -2,19 +2,22 @@
 import responseHandler from '../../utils/responseHandler.js'
 import errorHandler from '../../utils/errorHandler.js'
 
+// models
+import todosModel from '../todos/model.js'
+
 export default (req, res) => {
   // todo delete
   if (req.method === 'DELETE') {
     try {
       const id = req.url.split('/').at(-1)
-      const index = req.todosModel.getIndexById(id)
+      const index = todosModel.getIndexById(id)
 
       if (index === -1) {
         return errorHandler({ res, message: 'todo not found' })
       }
 
-      req.todosModel.deleteById(id)
-      return responseHandler({ res, data: req.todosModel.getAll() })
+      todosModel.deleteById(id)
+      return responseHandler({ res, data: todosModel.getAll() })
     } catch (error) {
       errorHandler({ res, code: 400, errorMessage: error.message })
     }
@@ -29,13 +32,13 @@ export default (req, res) => {
       }
 
       const id = req.url.split('/').at(-1)
-      const index = req.todosModel.getIndexById(id)
+      const index = todosModel.getIndexById(id)
 
       if (index === -1) {
         return errorHandler({ res, message: 'todo not found' })
       }
 
-      const todo = req.todosModel.updateById({ id, title })
+      const todo = todosModel.updateById({ id, title })
 
       return responseHandler({ res, data: todo })
     } catch (error) {

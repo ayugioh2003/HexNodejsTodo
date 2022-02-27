@@ -4,10 +4,13 @@ import { v4 as uuidv4 } from 'uuid'
 import responseHandler from '../../utils/responseHandler.js'
 import errorHandler from '../../utils/errorHandler.js'
 
+// models
+import todosModel from './model.js'
+
 export default (req, res) => {
   // todos get
   if (req.method === 'GET') {
-    return responseHandler({ res, data: req.todosModel.getAll() })
+    return responseHandler({ res, data: todosModel.getAll() })
   }
   // todo post
   if (req.method === 'POST') {
@@ -22,7 +25,7 @@ export default (req, res) => {
         id: uuidv4(),
         title,
       }
-      req.todosModel.add(todo)
+      todosModel.add(todo)
 
       return responseHandler({ res, data: todo })
     } catch (error) {
@@ -32,8 +35,8 @@ export default (req, res) => {
   // todo delete
   if (req.method === 'DELETE') {
     try {
-      req.todosModel.deleteAll()
-      return responseHandler({ res, data: req.todosModel.getAll() })
+      todosModel.deleteAll()
+      return responseHandler({ res, data: todosModel.getAll() })
     } catch (error) {
       return errorHandle({ res, code: 400, errorMessage: error.message })
     }
