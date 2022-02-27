@@ -7,7 +7,7 @@ import errorHandler from '../../utils/errorHandler.js'
 export default (req, res) => {
   // todos get
   if (req.method === 'GET') {
-    return responseHandler({ res, data: req.todos })
+    return responseHandler({ res, data: req.todosModel.getAll() })
   }
   // todo post
   if (req.method === 'POST') {
@@ -15,14 +15,14 @@ export default (req, res) => {
       const title = JSON.parse(req.body).title
 
       if (!title) {
-        return errorHandler({ res, message: 'title is required' })
+        return errorHandler({ res, code: 400, message: 'title is required' })
       }
 
       const todo = {
         id: uuidv4(),
         title,
       }
-      req.todos.push(todo)
+      req.todosModel.add(todo)
 
       return responseHandler({ res, data: todo })
     } catch (error) {
@@ -32,8 +32,8 @@ export default (req, res) => {
   // todo delete
   if (req.method === 'DELETE') {
     try {
-      req.todos.length = 0
-      return responseHandler({ res, data: req.todos })
+      req.todosModel.deleteAll()
+      return responseHandler({ res, data: req.todosModel.getAll() })
     } catch (error) {
       return errorHandle({ res, code: 400, errorMessage: error.message })
     }

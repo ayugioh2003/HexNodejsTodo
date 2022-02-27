@@ -7,16 +7,16 @@ export default (req, res) => {
   if (req.method === 'DELETE') {
     try {
       const id = req.url.split('/').at(-1)
-      const index = req.todos.findIndex((todo) => todo.id === id)
+      const index = req.todosModel.getIndexById(id)
 
       if (index === -1) {
         return errorHandler({ res, message: 'todo not found' })
       }
 
-      req.todos.splice(index, 1)
-      return responseHandler({ res, data: req.todos })
+      req.todosModel.deleteById(id)
+      return responseHandler({ res, data: req.todosModel.getAll() })
     } catch (error) {
-      errorHandler({ res, code: 200, errorMessage: error.message })
+      errorHandler({ res, code: 400, errorMessage: error.message })
     }
   }
   // todo patch
@@ -29,18 +29,17 @@ export default (req, res) => {
       }
 
       const id = req.url.split('/').at(-1)
-      const index = req.todos.findIndex((todo) => todo.id === id)
+      const index = req.todosModel.getIndexById(id)
 
       if (index === -1) {
         return errorHandler({ res, message: 'todo not found' })
       }
 
-      const todo = req.todos[index]
-      todo.title = title
+      const todo = req.todosModel.updateById({ id, title })
 
       return responseHandler({ res, data: todo })
     } catch (error) {
-      errorHandler({ res, code: 200, errorMessage: error.message })
+      errorHandler({ res, code: 400, errorMessage: error.message })
     }
   }
 }

@@ -9,15 +9,11 @@ import todosRoute from './components/todos/index.js'
 import todoRoute from './components/todo/index.js'
 
 // models
-const todos = [
-  {
-    id: '0fc88620-1a44-4654-b38c-7f0f59aca2af',
-    title: '早上起來刷刷牙',
-  },
-]
+import TodosModel from './components/todos/model.js'
+const todosModel = new TodosModel()
 
 const requestListener = (req, res) => {
-  req.todos = todos
+  req.todosModel = todosModel
   req.body = ''
   req.on('data', (chunk) => {
     req.body += chunk
