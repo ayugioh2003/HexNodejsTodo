@@ -15,8 +15,7 @@ export default (req, res) => {
       const title = JSON.parse(req.body).title
 
       if (!title) {
-        console.log('title is required')
-        return errorHandler({ res })
+        return errorHandler({ res, message: 'title is required' })
       }
 
       const todo = {
@@ -27,7 +26,7 @@ export default (req, res) => {
 
       return responseHandler({ res, data: todo })
     } catch (error) {
-      return errorHandler({ res })
+      return errorHandler({ res, code: 400, errorMessage: error.message })
     }
   }
   // todo delete
@@ -36,8 +35,7 @@ export default (req, res) => {
       req.todos.length = 0
       return responseHandler({ res, data: req.todos })
     } catch (error) {
-      console.log(error)
-      return errorHandle({ res })
+      return errorHandle({ res, code: 400, errorMessage: error.message })
     }
   }
 }

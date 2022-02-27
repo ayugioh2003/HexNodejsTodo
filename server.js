@@ -2,6 +2,7 @@ import http from 'http'
 
 // config
 import responseHandler from './utils/responseHandler.js'
+import errorHandler from './utils/errorHandler.js'
 
 // routers
 import todosRoute from './components/todos/index.js'
@@ -41,11 +42,9 @@ const requestListener = (req, res) => {
     }
 
     // ------------ else ------------
-    return responseHandler({
+    return errorHandler({
       res,
       code: 404,
-      status: 'false',
-      message: '無此網站路由',
     })
   })
 }
