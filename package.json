@@ -1,0 +1,17 @@
+{
+  "name": "07-todolist-dev",
+  "version": "1.0.0",
+  "description": "step",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "uuid": "^8.3.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
