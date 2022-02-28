@@ -1,12 +1,46 @@
 {
 	"info": {
-		"_postman_id": "a4fbe7dc-823f-4caa-9ed8-55841a8683bc",
-		"name": "Hex Node todolist - Heroku",
+		"_postman_id": "5395cdb8-4b54-42cb-98d3-f3bc3390fab7",
+		"name": "Hex Node todolist_heroku",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "todos",
+			"name": "根路徑測試",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://fast-fjord-13680.herokuapp.com",
+					"protocol": "https",
+					"host": [
+						"fast-fjord-13680",
+						"herokuapp",
+						"com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Options 測試",
+			"request": {
+				"method": "OPTIONS",
+				"header": [],
+				"url": {
+					"raw": "https://fast-fjord-13680.herokuapp.com",
+					"protocol": "https",
+					"host": [
+						"fast-fjord-13680",
+						"herokuapp",
+						"com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "取得全部 Todos",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -26,16 +60,21 @@
 			"response": []
 		},
 		{
-			"name": "todos",
+			"name": "新增一筆 Todo",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"早上刷牙3\"\r\n}"
+					"raw": "{\r\n    \"title\": \"早上刷牙3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
-					"raw": "https://fast-fjord-13680.herokuapp.com//todos",
+					"raw": "https://fast-fjord-13680.herokuapp.com/todos",
 					"protocol": "https",
 					"host": [
 						"fast-fjord-13680",
@@ -43,7 +82,6 @@
 						"com"
 					],
 					"path": [
-						"",
 						"todos"
 					]
 				}
@@ -51,7 +89,7 @@
 			"response": []
 		},
 		{
-			"name": "todos",
+			"name": "刪除全部 Todos",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -75,7 +113,7 @@
 			"response": []
 		},
 		{
-			"name": "刪除單筆待辦",
+			"name": "刪除單筆 Todo",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -94,19 +132,26 @@
 					"path": [
 						"todos",
 						"0fc88620-1a44-4654-b38c-7f0f59aca2af"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "",
+							"disabled": true
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "修改單筆待辦",
+			"name": "修改單筆 Todo",
 			"request": {
 				"method": "PATCH",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"早上刷牙3\"\r\n}"
+					"raw": "{\r\n    \"title\": \"早上刷牙111~~~\"\r\n}"
 				},
 				"url": {
 					"raw": "https://fast-fjord-13680.herokuapp.com/todos/0fc88620-1a44-4654-b38c-7f0f59aca2af",

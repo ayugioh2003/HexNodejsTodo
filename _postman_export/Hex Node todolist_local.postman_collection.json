@@ -1,0 +1,159 @@
+{
+	"info": {
+		"_postman_id": "2aa88695-150e-4ffb-a32d-4c765db1de95",
+		"name": "Hex Node todolist_local",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "根路徑測試",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		},
+		{
+			"name": "Options 測試",
+			"request": {
+				"method": "OPTIONS",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3005",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3005"
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "取得全部 Todos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3005/todos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3005",
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增一筆 Todo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"早上刷牙3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3005/todos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3005",
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刪除全部 Todos",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"早上刷牙3\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3005/todos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3005",
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刪除單筆 Todo",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"早上刷牙3\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3005/todos/0fc88620-1a44-4654-b38c-7f0f59aca2af",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3005",
+					"path": [
+						"todos",
+						"0fc88620-1a44-4654-b38c-7f0f59aca2af"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "修改單筆 Todo",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"早上刷牙111~~~\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3005/todos/0fc88620-1a44-4654-b38c-7f0f59aca2af",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3005",
+					"path": [
+						"todos",
+						"0fc88620-1a44-4654-b38c-7f0f59aca2af"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
