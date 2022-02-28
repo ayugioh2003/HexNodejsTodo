@@ -7,10 +7,11 @@ import errorHandler from '../../utils/errorHandler.js'
 // models
 import todosModel from './model.js'
 
-export default (req, res) => {
+export default async (req, res) => {
   // todos get
   if (req.method === 'GET') {
-    return responseHandler({ res, data: todosModel.getAll() })
+    const data = await todosModel.getAll()
+    return responseHandler({ res, data })
   }
   // todo post
   if (req.method === 'POST') {
@@ -35,8 +36,9 @@ export default (req, res) => {
   // todo delete
   if (req.method === 'DELETE') {
     try {
-      todosModel.deleteAll()
-      return responseHandler({ res, data: todosModel.getAll() })
+      await todosModel.deleteAll()
+      const data = await todosModel.getAll()
+      return responseHandler({ res, data })
     } catch (error) {
       return errorHandle({ res, code: 400, errorMessage: error.message })
     }

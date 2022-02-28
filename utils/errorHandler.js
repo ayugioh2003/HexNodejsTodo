@@ -6,7 +6,6 @@ const errorCodes = {
 }
 
 function errorHandler(props) {
-  console.log('props', props)
   const payload = {
     ...props,
     code: props.code || 400,
