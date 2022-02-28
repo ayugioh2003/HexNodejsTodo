@@ -4,13 +4,39 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>HexSchool todo app with nodejs server</title>
+    <style>
+      .container {
+        background-color: #f5f5f5;
+        max-width: 600px;
+        margin: 0 auto;
+        border: 1px solid transparent;
+      }
+      .input-area {
+        display: flex;
+        gap: 4px;
+        justify-content: center;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .list {
+        background-color: pink;
+        max-width: 400px;
+        margin: 50px auto;
+      }
+    </style>
   </head>
   <body>
-    <input type="text" class="txt" placeholder="請輸入待辦事項" />
-    <input type="button" class="save" value="儲存待辦" />
-    <input type="button" class="deleteAll" value="刪除所有待辦" />
-    <ul class="list"></ul>
+    <div class="container">
+      <div class="input-area">
+        <input type="text" class="txt" placeholder="請輸入待辦事項" />
+        <input type="button" class="save" value="儲存待辦" />
+        <input type="button" class="deleteAll" value="刪除所有待辦" />
+      </div>
+      <ul class="list"></ul>
+    </div>
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module">
@@ -117,10 +143,12 @@
           let str = ''
           this.data.forEach(function (item, index) {
             str += /*html*/ `
-            <li>
-              <span style="display: inline-block; min-width: 150px;">${item.title}</span>
-              <input class="delete" type="button" data-id="${item.id}" value="刪除待辦">
-              <input class="update" type="button" data-id="${item.id}" value="修改待辦">
+            <li style="padding: 5px 20px;">
+              <div style="display: flex; gap: 0.5rem;">
+                <span style="display: inline-block; min-width: 150px; margin-right: auto;">${item.title}</span>
+                <input class="delete" type="button" data-id="${item.id}" value="刪除待辦">
+                <input class="update" type="button" data-id="${item.id}" value="修改待辦">
+              </div>
             </li>
           `
           })
