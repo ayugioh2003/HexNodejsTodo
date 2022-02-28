@@ -2,8 +2,8 @@
 
 step
 
-- package init
-- createServer
+- [x] package init
+- [x] createServer
 - root & options
 - get todos
 
