@@ -1,8 +1,10 @@
 import http from 'http'
+import fs from 'fs'
 
 // config
 import responseHandler from './utils/responseHandler.js'
 import errorHandler from './utils/errorHandler.js'
+import headers from './utils/headers.js'
 
 // routers
 import todosRoute from './components/todos/index.js'
@@ -22,7 +24,22 @@ const requestListener = (req, res) => {
       return responseHandler({ res, data: todosModel.getAll() })
     }
     if (req.url === '/' && req.method === 'GET') {
-      return responseHandler({ res, data: todosModel.getAll() })
+      fs.readFile(
+        './pages/index/index.html',
+        { encoding: 'utf8', flag: 'r' },
+        function (error, data) {
+          if (error) {
+            console.log('error', error)
+            errorHandler({ res, errorMessage: error.message })
+          } else {
+            res.writeHead(200, { ...headers, 'Content-Type': 'text/html' })
+            res.write(data)
+            res.end()
+          }
+        }
+      )
+      return
+      // return responseHandler({ res, data: todosModel.getAll() })
     }
 
     if (req.url === '/todos') {

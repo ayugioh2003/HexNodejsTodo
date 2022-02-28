@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="text" class="txt" placeholder="請輸入待辦事項" />
+    <input type="button" class="save" value="儲存待辦" />
+    <input type="button" class="deleteAll" value="刪除所有待辦" />
+    <ul class="list"></ul>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module">
+      const txt = document.querySelector('.txt')
+      const save = document.querySelector('.save')
+      const list = document.querySelector('.list')
+      const deleteAll = document.querySelector('.deleteAll')
+
+      // 取得待辦功能
+      class Controller {
+        constructor() {
+          this.data = []
+          this.getAll()
+          this.Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            },
+          })
+        }
+        //
+        getAll() {
+          fetch('/todos')
+            .then((res) => res.json())
+            .then((res) => {
+              console.log('res', res)
+              this.data = res.data
+              this.renderData()
+            })
+        }
+
+        deleteAll() {
+          fetch('/todos', {
+            method: 'DELETE',
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              this.Toast.fire({
+                icon: 'success',
+                title: '已全部刪除',
+              })
+              this.getAll()
+            })
+        }
+
+        add({ title }) {
+          fetch('/todos', {
+            method: 'POST',
+            body: JSON.stringify({
+              title,
+            }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              this.Toast.fire({
+                icon: 'success',
+                title: '已新增待辦',
+              })
+              txt.value = ''
+              this.getAll()
+            })
+        }
+        //
+        delete({ id }) {
+          fetch(`/todos/${id}`, {
+            method: 'DELETE',
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              this.Toast.fire({
+                icon: 'success',
+                title: '已刪除待辦',
+              })
+              this.getAll()
+            })
+        }
+
+        update({ id, title }) {
+          fetch(`/todos/${id}`, {
+            method: 'PATCH',
+            body: JSON.stringify({
+              title,
+            }),
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              this.Toast.fire({
+                icon: 'success',
+                title: '已修改待辦',
+              })
+              this.getAll()
+            })
+        }
+        //
+        renderData() {
+          let str = ''
+          this.data.forEach(function (item, index) {
+            str += /*html*/ `
+            <li>
+              <span style="display: inline-block; min-width: 150px;">${item.title}</span>
+              <input class="delete" type="button" data-id="${item.id}" value="刪除待辦">
+              <input class="update" type="button" data-id="${item.id}" value="修改待辦">
+            </li>
+          `
+          })
+          list.innerHTML = str
+        }
+      }
+      const controller = new Controller()
+
+      // 刪除全部功能
+      deleteAll.addEventListener('click', function () {
+        controller.deleteAll()
+      })
+
+      // 新增待辦功能
+      save.addEventListener('click', function (e) {
+        if (txt.value == '') {
+          alert('請輸入內容')
+          return
+        }
+        controller.add({ title: txt.value })
+      })
+      txt.addEventListener('keypress', function (e) {
+        if (e.key !== 'Enter') {
+          return
+        }
+
+        if (txt.value == '') {
+          alert('請輸入內容')
+          return
+        }
+        controller.add({ title: txt.value })
+      })
+
+      // 刪除單筆待辦功能
+      list.addEventListener('click', function (e) {
+        if (e.target.getAttribute('class') !== 'delete') {
+          return
+        }
+        let id = e.target.getAttribute('data-id')
+        controller.delete({ id })
+      })
+
+      // 修改待辦功能
+      list.addEventListener('click', async function (e) {
+        if (e.target.getAttribute('class') !== 'update') {
+          return
+        }
+
+        const { value: title } = await Swal.fire({
+          title: '修改 todo 內容',
+          input: 'text',
+          inputLabel: 'Your todo',
+          inputPlaceholder: 'Enter your todo',
+        })
+        console.log('title', title)
+
+        let id = e.target.getAttribute('data-id')
+        if (title) {
+          controller.update({ id, title })
+        }
+      })
+    </script>
+  </body>
+</html>
