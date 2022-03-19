@@ -40,7 +40,6 @@ export default async (req, res) => {
       }
 
       const todo = await todosModel.updateById({ id, title })
-      console.log('todo', todo)
 
       return responseHandler({ res, data: todo })
     } catch (error) {
