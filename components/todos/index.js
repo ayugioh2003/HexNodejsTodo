@@ -40,7 +40,7 @@ export default async (req, res) => {
       const data = await todosModel.getAll()
       return responseHandler({ res, data })
     } catch (error) {
-      return errorHandle({ res, code: 400, errorMessage: error.message })
+      return errorHandler({ res, code: 400, errorMessage: error.message })
     }
   }
 }
