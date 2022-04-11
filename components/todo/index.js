@@ -3,21 +3,23 @@ import responseHandler from '../../utils/responseHandler.js'
 import errorHandler from '../../utils/errorHandler.js'
 
 // models
-import todosModel from '../todos/model.js'
+import Todo from '../todos/model.js'
 
 export default async (req, res) => {
   // todo delete
   if (req.method === 'DELETE') {
     try {
       const id = req.url.split('/').at(-1)
-      const index = await todosModel.getIndexById(id)
+      const data = await Todo.findByIdAndDelete(id)
 
-      if (index === -1) {
-        return errorHandler({ res, message: 'todo not found' })
+      if (!id || !data) {
+        return errorHandler({
+          res,
+          code: 404,
+          message: 'Todo not found'
+        })
       }
-
-      await todosModel.deleteById(id)
-      const data = await todosModel.getAll()
+      // Todo.deleteOne({ _id: id })
       return responseHandler({ res, data })
     } catch (error) {
       errorHandler({ res, code: 400, errorMessage: error.message })
@@ -33,13 +35,15 @@ export default async (req, res) => {
       }
 
       const id = req.url.split('/').at(-1)
-      const index = await todosModel.getIndexById(id)
+      const todo = await Todo.findByIdAndUpdate(id, { title }, { returnDocument: 'after'})
 
-      if (index === -1) {
-        return errorHandler({ res, message: 'todo not found' })
+      if (!id || !todo) {
+        return errorHandler({
+          res,
+          code: 404,
+          message: 'Todo not found'
+        })
       }
-
-      const todo = await todosModel.updateById({ id, title })
 
       return responseHandler({ res, data: todo })
     } catch (error) {

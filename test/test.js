@@ -5,13 +5,13 @@ import app from '../app.js'
 
 let tempTodo = {}
 
-describe('Array', function () {
-  describe('just test example #indexOf()', function () {
-    it('should return -1 when the value is not present', function () {
-      assert.equal([1, 2, 3].indexOf(4), -1)
-    })
-  })
-})
+// describe('Array', function () {
+//   describe('just test example #indexOf()', function () {
+//     it('should return -1 when the value is not present', function () {
+//       assert.equal([1, 2, 3].indexOf(4), -1)
+//     })
+//   })
+// })
 
 describe('API test', function () {
   describe('GET /todos', function () {
@@ -33,7 +33,7 @@ describe('API test', function () {
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-          assert.exists(res.body.data[0].id, 'id not exist')
+          assert.exists(res.body.data[0]._id, '_id not exist')
           assert.exists(res.body.data[0].title, 'title not exist')
           done()
           if (err) throw err
@@ -53,7 +53,7 @@ describe('API test', function () {
         .end(function (err, res) {
           tempTodo = res.body.data
           assert.typeOf(res.body.data, 'object')
-          assert.exists(res.body.data.id, 'id not exist')
+          assert.exists(res.body.data._id, '_id not exist')
           assert.exists(res.body.data.title, 'title not exist')
           done()
           if (err) throw err
@@ -66,13 +66,13 @@ describe('API test', function () {
       const data = { ...tempTodo, title: 'patch it 123' }
 
       request(app)
-        .patch(`/todos/${data.id}`)
+        .patch(`/todos/${data._id}`)
         .send(data)
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
           assert.typeOf(res.body.data, 'object')
-          assert.equal(res.body.data.id, data.id)
+          assert.equal(res.body.data._id, data._id)
           assert.equal(res.body.data.title, data.title)
           done()
           if (err) throw err
@@ -81,21 +81,18 @@ describe('API test', function () {
   })
 
   describe('DELETE /todos/_id', function () {
-    it('should return todos array', function (done) {
+    it('should return deleted todo', function (done) {
       const data = tempTodo
 
       request(app)
-        .delete(`/todos/${data.id}`)
+        .delete(`/todos/${data._id}`)
         .expect('Content-Type', /json/)
         .expect(200)
         .end(function (err, res) {
-          assert.typeOf(res.body.data, 'array')
-
-          const isTodoDeleted = !res.body.data.some(
-            (todo) => todo.id === data.id
-          )
-          assert.isTrue(isTodoDeleted)
-
+          tempTodo = res.body.data
+          assert.typeOf(res.body.data, 'object')
+          assert.exists(res.body.data._id, '_id not exist')
+          assert.exists(res.body.data.title, 'title not exist')
           done()
           if (err) throw err
         })

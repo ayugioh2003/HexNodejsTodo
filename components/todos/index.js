@@ -1,16 +1,14 @@
-import { v4 as uuidv4 } from 'uuid'
-
 // config
 import responseHandler from '../../utils/responseHandler.js'
 import errorHandler from '../../utils/errorHandler.js'
 
 // models
-import todosModel from './model.js'
+import Todo from './model.js'
 
 export default async (req, res) => {
   // todos get
   if (req.method === 'GET') {
-    const data = await todosModel.getAll()
+    const data = await Todo.find()
     return responseHandler({ res, data })
   }
   // todo post
@@ -22,11 +20,7 @@ export default async (req, res) => {
         return errorHandler({ res, code: 400, message: 'title is required' })
       }
 
-      const todo = {
-        id: uuidv4(),
-        title,
-      }
-      todosModel.add(todo)
+      const todo = await Todo.create({ title })
 
       return responseHandler({ res, data: todo })
     } catch (error) {
@@ -36,9 +30,9 @@ export default async (req, res) => {
   // todo delete
   if (req.method === 'DELETE') {
     try {
-      await todosModel.deleteAll()
-      const data = await todosModel.getAll()
-      return responseHandler({ res, data })
+      const todosRes = await Todo.deleteMany()
+      const todos = await Todo.find()
+      return responseHandler({ res, data: todos })
     } catch (error) {
       return errorHandler({ res, code: 400, errorMessage: error.message })
     }
