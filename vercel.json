@@ -8,6 +8,10 @@
   ],
   "routes": [
     {
+      "src": "/",
+      "dest": "/pages/index/index.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "server.js"
     }
